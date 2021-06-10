@@ -201,7 +201,7 @@ void eDVBVolumecontrol::volumeMute()
 	if (fd >= 0)
 	{
 #ifdef DVB_API_VERSION
-		ioctl(fd, AUDIO_SET_MUTE, true);
+		
 #endif
 		closeMixer(fd);
 	}
@@ -224,7 +224,7 @@ void eDVBVolumecontrol::volumeUnMute()
 	if (fd >= 0)
 	{
 #ifdef DVB_API_VERSION
-		ioctl(fd, AUDIO_SET_MUTE, false);
+		
 #endif
 		closeMixer(fd);
 	}

@@ -20,7 +20,7 @@ from Components.Pixmap import Pixmap
 from Tools.LoadPixmap import LoadPixmap
 from Components.InputDevice import iInputDevices, iRcTypeControl
 from Components.AVSwitch import AVSwitch
-from os import path
+from os import path , popen
 from Components.HTMLComponent import HTMLComponent
 from Components.GUIComponent import GUIComponent
 import skin, os
@@ -139,6 +139,7 @@ class About(Screen):
 		AboutText += hddinfo + "\n\n" + _("Network Info:")
 		for x in about.GetIPsFromNetworkInterfaces():
 			AboutText += "\n" + x[0] + ": " + x[1]
+		AboutText += '\n' + (_("Network Speed:")) + " " + self.netspeed() + "\n"
 		AboutText += '\n\n' + _("Uptime") + ": " + about.getBoxUptime()
 
 		self["AboutScrollLabel"] = ScrollLabel(AboutText)
@@ -159,7 +160,15 @@ class About(Screen):
 				"up": self["AboutScrollLabel"].pageUp,
 				"down": self["AboutScrollLabel"].pageDown
 			})
-
+	
+	def netspeed(self):
+		netspeed = ""
+		for line in popen('ethtool eth0 |grep Speed', 'r'):
+			line = line.strip().split(":")
+			line = line[1].replace(' ', '')
+			netspeed += line
+			return str(netspeed)
+	
 	def showTranslationInfo(self):
 		self.session.open(TranslationInfo)
 
